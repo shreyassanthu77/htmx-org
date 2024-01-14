@@ -7,6 +7,7 @@ import DocumentIcon from "../assets/icons/DocumentIcon.astro";
 import CodeIcon from "../assets/icons/CodeIcon.astro";
 import BookIcon from "../assets/icons/BookIcon.astro";
 import ServerIcon from "../assets/icons/ServerIcon.astro";
+import Prism from "../components/Prism.astro";
 
 const features = [
   {
@@ -42,32 +43,26 @@ const features = [
 ];
 ---
 
-<RootLayout>
+<RootLayout withPrism={true}>
   <main
-    class="relative flex h-[80vh] flex-col items-center justify-center gap-4 md:flex-row"
+    class="relative flex h-[80vh] flex-col items-center justify-center gap-4 px-4 md:flex-row"
   >
     <div class="absolute -z-10 -translate-y-1/2 overflow-hidden rounded-3xl">
       <Image src={horse} alt="A laser horse eating fries" height={300} />
       <span class="absolute inset-0 block h-full w-full bg-slate-950/60"></span>
     </div>
-    <div class="px-4 text-center">
+    <div class="mx-auto max-w-full text-center">
       <h1 class="text-4xl font-black">HATEOAS / HTMX (Same thing)</h1>
-      <p class="mx-auto mt-3 max-w-[40ch] gap-2 text-xl text-gray-100">
-        The future of web is the past of web. We're going back to the future :)
-        Just add the script tag and you're done.
+      <p class="mt-3 max-w-[40ch] gap-2 text-xl text-gray-100">
+        Htmx is a framework for building web pages using only HTML. It's based
+        on the philosophy of HATEOAS and is a spiritual successor to
+        intercooler.js. Just copy the script tag below and you're ready to go!
       </p>
-      <code
-        class="max-w-screen mx-auto mt-4 flex max-w-[calc(100vw_-_40px)] items-center overflow-x-auto rounded-lg bg-black px-4 py-2 text-lg md:mx-0 md:justify-center"
-      >
-        <span>{"<"}</span>
-        <span class="text-blue-500">script</span>
-        <span class="ml-2 text-yellow-500">src=</span>
-        <span class="text-green-500">'https://unpkg.com/htmx.org@1.9.10'</span>
-        <span>{">"}</span>
-        <span>{"</"}</span>
-        <span class="text-blue-500">script</span>
-        <span>{">"}</span>
-      </code>
+      <Prism
+        class="!mx-auto mt-4 md:max-w-max"
+        language="html"
+        code={`<script src="https://unpkg.com/htmx.org"></script>`}
+      />
       <a
         class="group mx-auto mt-4 block max-w-max rounded-lg bg-gradient-to-r from-blue-800 to-indigo-900 p-0.5"
         href="/get-started"
@@ -103,6 +98,25 @@ const features = [
         </div>
       ))
     }
+  </section>
+  <section class="container mx-auto px-4">
+    <h3 class="py-12 text-center text-4xl font-medium">
+      Everything is just HTML<sup>*</sup>
+    </h3>
+
+    <Prism
+      class="!mx-auto max-w-max"
+      language="html"
+      code={`<div 
+	hx-get="/api/quote" 
+	hx-trigger="click" 
+	hx-target="#quote"
+>
+	<button>Get Quote</button>
+</div>
+
+<div id="quote"></div>`}
+    />
   </section>
   <div class="h-screen"></div>
 

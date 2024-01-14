@@ -1,10 +1,14 @@
 ---
 import Header from "../components/Header.astro";
+import prismCSS from "../assets/prism/prism.css?url";
+import prismJS from "../assets/prism/prism.js?url";
 interface Props {
   title?: string;
+  withPrism?: boolean;
 }
 
-const { title = "htmx - High powertools for html" } = Astro.props;
+const { title = "htmx - High powertools for html", withPrism = false } =
+  Astro.props;
 ---
 
 <!doctype html>
@@ -13,9 +17,17 @@ const { title = "htmx - High powertools for html" } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
-  </head>
+    {
+      withPrism && (
+        <>
+          <link rel="stylesheet" href={prismCSS} />
+        </>
+      )
+    }</head
+  >
   <body class="bg-slate-950 text-white">
     <Header />
     <slot />
+    {withPrism && <script type="module" src={prismJS} />}
   </body>
 </html>

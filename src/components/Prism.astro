@@ -1,0 +1,30 @@
+---
+interface Props {
+  language: string;
+  code: string;
+  file?: string;
+  class?: string;
+}
+
+const {
+  language,
+  file = language,
+  code,
+  class: className,
+}: Props = Astro.props;
+---
+
+<pre
+  data-file={file}
+  class:list={[
+    `relative block rounded-lg !bg-slate-900 !px-10 before:absolute before:right-0 before:top-0 before:z-10 before:block before:select-none before:bg-gray-700 before:px-2 before:py-1 before:font-mono before:text-sm before:[content:attr(data-file)]`,
+    className,
+  ]}>
+<code class={`language-${language}`}>{code}</code>
+</pre>
+
+<style>
+  pre {
+    position: relative;
+  }
+</style>
