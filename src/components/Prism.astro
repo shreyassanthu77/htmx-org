@@ -6,22 +6,96 @@ interface Props {
   class?: string;
 }
 
-const {
-  language,
-  file = language,
-  code,
-  class: className,
-}: Props = Astro.props;
+const { language, file, code, class: className }: Props = Astro.props;
 ---
 
-<pre
-  data-file={file}
+<div
   class:list={[
-    `relative block rounded-lg !bg-slate-900 !px-10 before:absolute before:right-0 before:top-0 before:z-10 before:block before:select-none before:bg-gray-700 before:px-2 before:py-1 before:font-mono before:text-sm before:[content:attr(data-file)]`,
+    "group relative block overflow-y-hidden rounded-lg border border-gray-700 bg-gray-950",
     className,
-  ]}>
-<code class={`language-${language}`}>{code}</code>
-</pre>
+  ]}
+  data-code
+>
+  {
+    file && (
+      <div class="flex w-full items-center justify-between">
+        <p class="border-t border-blue-700 bg-slate-900/60 px-8 py-2">{file}</p>
+        <button
+          data-copy-code
+          type="button"
+          title="Copy to clipboard"
+          class="mr-4 rounded px-3 py-1 transition-colors hover:bg-white/20"
+        >
+          copy
+        </button>
+      </div>
+    )
+  }
+
+  {
+    !file && (
+      <button
+        data-copy-code
+        type="button"
+        title="Copy to clipboard"
+        class="absolute right-2 top-2 z-10 my-auto rounded bg-slate-800 px-3 py-1 opacity-0 transition-all hover:bg-slate-700 group-focus-within:opacity-100 group-hover:opacity-100"
+      >
+        copy
+      </button>
+    )
+  }
+  <pre
+    class="!my-0 !bg-slate-900/60"><code class={`language-${language}`}>{code.trim()}</code></pre>
+</div>
+
+<script>
+  function copyToClipboard(text: string) {
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(text);
+    } else {
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      textArea.style.position = "fixed";
+      textArea.style.top = "0";
+      textArea.style.left = "0";
+      textArea.style.width = "2em";
+      textArea.style.height = "2em";
+      textArea.style.padding = "0";
+      textArea.style.border = "none";
+      textArea.style.outline = "none";
+      textArea.style.boxShadow = "none";
+
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+
+      return new Promise((res, rej) => {
+        document.execCommand("copy") ? res(true) : rej();
+        textArea.remove();
+      });
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const copyCodeButtons = document.querySelectorAll(
+      "[data-copy-code]",
+    ) as NodeListOf<HTMLButtonElement>;
+
+    copyCodeButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const code = button.closest("[data-code]")?.querySelector("code");
+        const text = code?.innerText ?? "";
+
+        copyToClipboard(text).then(() => {
+          button.innerText = "copied";
+          setTimeout(() => {
+            button.innerText = "copy";
+          }, 1000);
+        });
+      });
+    });
+  });
+</script>
 
 <style>
   pre {
