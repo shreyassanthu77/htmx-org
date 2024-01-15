@@ -8,30 +8,35 @@ import ServerIcon from "../../assets/icons/ServerIcon.astro";
 const features = [
   {
     Icon: FireIcon,
+    color: "text-orange-500",
     title: "Blazing Fast",
     description:
       "htmx is super fast because it doesn't do much at all, it just looks for HTML attributes and does what they say.",
   },
   {
     Icon: DocumentIcon,
+    color: "text-green-500",
     title: "Super Small",
     description:
       "htmx is just 14k minified and gzipped, almost 67% smaller than React.",
   },
   {
     Icon: CodeIcon,
+    color: "text-blue-500",
     title: "Easy to Setup",
     description:
       "htmx is just a single script tag, put it in your html and you're done. No build step, no npm, no webpack, no babel, no nothing.",
   },
   {
     Icon: BookIcon,
+    color: "text-yellow-500",
     title: "Easy to Learn",
     description:
       "htmx is just HTML attributes, so you already know how to use it. No new syntax to learn, no new language to learn, no new anything to learn.",
   },
   {
     Icon: ServerIcon,
+    color: "text-purple-500",
     title: "Backend Agnostic",
     description:
       "htmx works with any backend, because it's just HTML. If your server can serve HTML, it can work with htmx.",
@@ -54,11 +59,16 @@ const features = [
   </div>
 
   {
-    features.map(({ Icon, title, description }) => (
-      <div class="flex h-[275px] w-full flex-col rounded-lg bg-slate-900 p-6">
+    features.map(({ Icon, color, title, description }) => (
+      <div
+        class:list={[
+          "flex h-[275px] w-full flex-col rounded-lg bg-slate-900 p-6 text-lg",
+          color,
+        ]}
+      >
         <Icon />
-        <strong class="mt-6 text-xl">{title}</strong>
-        <p class="text-lg text-gray-400">{description}</p>
+        <strong class="mt-2 text-xl">{title}</strong>
+        <p class="mt-4 text-lg text-gray-400">{description}</p>
       </div>
     ))
   }
