@@ -4,34 +4,16 @@ import RootLayout from "../layouts/RootLayout.astro";
 import Hero from "../components/home/Hero.astro";
 import Features from "../components/home/Features.astro";
 
-import Prism from "../components/Prism.astro";
+// import Prism from "../components/Prism.astro";
 ---
 
 <RootLayout withPrism={true}>
   <Hero />
   <Features />
-  <section class="container mx-auto px-4">
-    <h3 class="py-12 text-center text-4xl font-medium">
-      Everything is just HTML<sup>*</sup>
-    </h3>
-    <Prism
-      class="!mx-auto"
-      file="index.html"
-      language="html"
-      code={`
-<!-- no need for a build step, just include the script tag -->
-<script src="https://unpkg.com/htmx.org"></script>
-<div 
-	hx-get="/api/quote" 
-	hx-trigger="click" 
-	hx-target="#quote"
->
-	<button>Get Quote</button>
-</div>
 
-<div id="quote"></div>
-`}
-    />
+  <section class="container mx-auto px-4">
+    <h3></h3>
   </section>
+
   <div class="h-screen"></div>
 </RootLayout>

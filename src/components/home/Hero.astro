@@ -4,43 +4,43 @@ import horse from "../../assets/img/horse.png";
 ---
 
 <main
-  class="relative flex h-[60vh] flex-col items-center justify-center gap-4 px-4 md:flex-row"
+  class="container relative mx-auto flex min-h-[60vh] items-center justify-between px-4"
 >
-  <div
-    class="absolute left-1/2 -z-10 -translate-x-1/2 -translate-y-[50%] overflow-hidden rounded-3xl"
-  >
-    <Image src={horse} alt="A laser horse eating fries" height={300} />
-    <span class="absolute inset-0 block h-full w-full bg-slate-950/60"></span>
-  </div>
-  <div class="mx-auto max-w-full text-center">
-    <h1 class="text-4xl font-black">
-      Putting <span
-        class="bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent"
-        >hyper</span
-      > back into
+  <div>
+    <h1 class="text-5xl font-black leading-[1.25] md:text-6xl lg:text-7xl">
+      Let's put the
       <span
         class="bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent"
       >
-        hypermedia
+        hyper
+      </span>
+      <br />
+      back into
+      <span
+        class="bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent"
+      >
+        hypermedia!
       </span>
     </h1>
-    <p class="mx-auto mt-3 max-w-[40ch] gap-2 text-xl text-gray-100">
-      htmx / hateoas (same thing)
-    </p>
-    <div class="mt-4 flex items-center justify-center gap-4">
+    <span
+      class="overflow-none mt-8 block max-w-max rounded-lg bg-gradient-to-r from-blue-700 to-indigo-500 p-0.5"
+    >
       <a
-        class="group max-w-max rounded-lg bg-gradient-to-r from-blue-800 to-indigo-900 p-0.5"
-        href="/get-started"
+        href="/docs"
+        class="block rounded-lg bg-slate-950 px-4 py-2 transition-colors hover:bg-slate-950/80 focus:bg-slate-950/80"
       >
-        <span
-          class="block h-full w-full rounded-lg bg-slate-950 px-8 py-3 transition-colors group-hover:bg-slate-900"
-          >Get Started</span
-        >
+        Read the docs
       </a>
-      <!-- a simpler button that doesn't use a gradient but redirects to the docs -->
-      <a class="max-w-max rounded-lg bg-slate-950 p-0.5" href="/docs">
-        Read the Docs
-      </a>
-    </div>
+    </span>
+  </div>
+
+  <div
+    class:list={[
+      "absolute -z-10 from-slate-950 to-transparent md:relative ",
+      "after:absolute after:inset-0 after:z-50 after:block after:[content:'']",
+      "after:bg-slate-950/70 md:after:bg-transparent md:after:bg-gradient-to-r",
+    ]}
+  >
+    <Image src={horse} alt="HATEOAS baby!" height={500} />
   </div>
 </main>
