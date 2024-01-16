@@ -31,3 +31,13 @@ const { title = "htmx - High powertools for html", withPrism = false } =
     {withPrism && <script type="module" src={prismJS} />}
   </body>
 </html>
+
+<style is:global>
+  @tailwind utilities;
+
+  @layer utilities {
+    .container {
+      max-width: 1200px;
+    }
+  }
+</style>

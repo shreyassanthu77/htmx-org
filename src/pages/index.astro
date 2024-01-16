@@ -5,14 +5,45 @@ import Hero from "../components/home/Hero.astro";
 import Features from "../components/home/Features.astro";
 
 // import Prism from "../components/Prism.astro";
+import Prism from "../components/Prism.astro";
 ---
 
 <RootLayout withPrism={true}>
   <Hero />
   <Features />
 
-  <section class="container mx-auto px-4">
-    <h3></h3>
+  <section class="container mx-auto px-4 py-12">
+    <h3 class="text-3xl font-bold">Quick start</h3>
+    <Prism
+      class="mt-2"
+      language="html"
+      playground={true}
+      code={`
+<!-- Include the Script -->
+<script src="https://unpkg.com/htmx.org@1.9.10"></script>
+
+<!-- Write some HTML -->
+<button
+	hx-trigger="click"
+	hx-get="/api/quote"
+	hx-swap="innerHTML"
+	hx-target="#quote"
+>
+	Click me for a quote
+</button>
+
+<div id="quote"></div>
+
+<!--
+So what's happening here?
+
+1. When the button is clicked, htmx will make a GET request to /api/quote
+2. When the response comes back, htmx will swap the innerHTML of the div with the response
+
+That's it! No need to write any javascript. HATEOAS FTW!
+-->
+			`}
+    />
   </section>
 
   <div class="h-screen"></div>
