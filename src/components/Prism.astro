@@ -7,15 +7,13 @@ interface Props {
   code: string;
   file?: string;
   class?: string;
-  playground?: boolean;
 }
 
 const {
   language,
-  file,
+  file = language,
   code,
   class: className,
-  playground,
 }: Props = Astro.props;
 ---
 
@@ -26,56 +24,36 @@ const {
   ]}
   data-code
 >
-  {
-    file && (
-      <div class="flex w-full items-center justify-between">
-        <p class="border-t border-blue-700 bg-slate-900/60 px-8 py-2">{file}</p>
-        <button
-          data-copy-code
-          type="button"
-          title="Copy to clipboard"
-          class="mr-4 rounded px-3 py-1 transition-colors hover:bg-white/20"
-        >
-          copy
-        </button>
-      </div>
-    )
-  }
-
-  <div
-    class="absolute right-2 top-2 z-10 my-auto flex gap-2 opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100"
-  >
-    {
-      playground && (
-        <button
-          type="button"
-          title="Open in Playground"
-          class="flex gap-2 rounded bg-slate-800 px-3 py-1 transition-colors hover:bg-slate-700"
-        >
-          <PlayIcon />
-          Run
-        </button>
-      )
-    }
-    {
-      !file && (
-        <button
-          data-copy-code
-          type="button"
-          title="Copy to clipboard"
-          class="flex gap-2 rounded bg-slate-800 px-3 py-1 transition-colors hover:bg-slate-700"
-        >
-          <CopyIcon />
-          <span class="transition-colors">copy</span>
-        </button>
-      )
-    }
+  <div class="flex w-full items-center">
+    <p class="border-t border-blue-700 bg-slate-900/60 px-8 py-2">{file}</p>
+    <button
+      data-copy-code
+      type="button"
+      title="Copy to clipboard"
+      class="ml-auto mr-4 flex items-center gap-2 rounded px-3 py-1 transition-colors hover:bg-white/20"
+    >
+      <CopyIcon />
+      copy
+    </button>
   </div>
-  <pre
-    class="!my-0 !bg-slate-900/60"><code class={`language-${language}`}>{code.trim()}</code></pre>
-</div>
 
+  <div class="flex">
+    <pre
+      data-code-block
+      class="!my-0 !bg-slate-900/60"><code class={`language-${language}`}>{code.trim()}</code></pre>
+
+    <div class="max-h-[575px] overflow-hidden bg-slate-800 p-2" data-output>
+      <strong class="text-xl">Output</strong>
+      <div
+        class="output mt-2 h-full max-h-[calc(100%_-_2.25rem)] w-full overflow-y-auto rounded-md bg-white p-2 text-black"
+        set:html={code}
+      />
+    </div>
+  </div>
+</div>
 <script>
+  import Split from "split.js";
+
   function copyToClipboard(text: string) {
     if (navigator.clipboard && window.isSecureContext) {
       return navigator.clipboard.writeText(text);
@@ -125,10 +103,72 @@ const {
       });
     });
   });
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const codeBlocks = document.querySelectorAll(
+      "[data-code]",
+    ) as NodeListOf<HTMLElement>;
+
+    codeBlocks.forEach((codeContainer) => {
+      const code = codeContainer.querySelector(
+        "[data-code-block]",
+      ) as HTMLElement;
+      const output = codeContainer.querySelector(
+        "[data-output]",
+      ) as HTMLElement;
+
+      Split([code, output], {
+        snapOffset: 100,
+        sizes: [70, 30],
+        minSize: 0,
+        expandToMin: true,
+        gutterSize: 10,
+      });
+    });
+  });
 </script>
 
 <style>
   pre {
     position: relative;
+  }
+
+  :global(.gutter) {
+    background-repeat: no-repeat;
+    background-position: 50%;
+    @apply bg-slate-700;
+  }
+
+  :global(.gutter.gutter-horizontal) {
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==");
+    cursor: col-resize;
+  }
+
+  .output :global(button) {
+    @apply my-1 inline-block rounded bg-slate-900 px-3 py-2 text-white hover:bg-slate-800;
+  }
+
+  .output :global(a) {
+    @apply my-1 inline-block text-blue-700 underline;
+  }
+
+  .output :global(h1) {
+    @apply text-2xl font-bold;
+  }
+
+  .output :global(h2) {
+    @apply text-xl font-bold;
+  }
+
+  .output :global(h3) {
+    @apply text-lg font-bold;
+  }
+
+  .output :global(h4) {
+    @apply text-base font-bold;
+  }
+
+  .output :global(h5) {
+    @apply text-sm font-bold;
   }
 </style>
